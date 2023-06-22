@@ -64,9 +64,7 @@ jobs:
           cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
           architecture: x64
       - run: flutter config --enable-macos-desktop
-      - run: cd macos
-      - run: pod install
-      - run: cd ..
+      - run: cd macos && pod install
       - run: flutter build macos
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
