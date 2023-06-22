@@ -62,8 +62,8 @@ jobs:
           cache: true
           cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
           cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
-          architecture: arm64
-      # - run: flutter config --enable-macos-desktop
+          architecture: x86
+      - run: flutter config --enable-macos-desktop
       - run: flutter build macos
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
