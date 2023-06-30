@@ -23,11 +23,13 @@ class MainApp extends StatelessWidget {
         useMaterial3: true,
         scheme: FlexScheme.deepPurple,
         visualDensity: VisualDensity.comfortable,
+        fontFamily: 'Expose',
       ),
       darkTheme: FlexThemeData.dark(
         useMaterial3: true,
         scheme: FlexScheme.deepPurple,
         visualDensity: VisualDensity.comfortable,
+        fontFamily: 'Expose',
       ),
       home: const HomePage(),
     );

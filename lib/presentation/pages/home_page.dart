@@ -4,6 +4,7 @@ import 'package:flutter_icon_browser/presentation/views/fluentui_view.dart';
 import 'package:flutter_icon_browser/presentation/views/fontawesome_view.dart';
 import 'package:flutter_icon_browser/presentation/views/material_view.dart';
 import 'package:flutter_icon_browser/presentation/views/yaru_view.dart';
+import 'package:flutter_icon_browser/presentation/widgets/search_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yaru_icons/yaru_icons.dart';
@@ -24,6 +25,15 @@ class _HomePageState extends ConsumerState<HomePage> {
         title: const Text('Flutter Icon Browser'),
         centerTitle: false,
         actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => const SearchDialog(),
+              );
+            },
+            icon: const Icon(Icons.search),
+          ),
           IconButton(
             onPressed: () {
               showAboutDialog(

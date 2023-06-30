@@ -27,6 +27,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  fonts:
+    - family: FiraCode
+      fonts:
+        - asset: assets/fonts/FiraCode-Regular.ttf
+    - family: Expose
+      fonts:
+        - asset: assets/fonts/Expose-Regular.otf
+
   assets:
     - assets/logo.png
 
