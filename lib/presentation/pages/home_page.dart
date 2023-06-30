@@ -7,6 +7,7 @@ import 'package:flutter_icon_browser/presentation/views/yaru_view.dart';
 import 'package:flutter_icon_browser/presentation/widgets/search_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -45,7 +46,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ),
                 applicationName: "Flutter Icon Browser",
                 applicationVersion: "1.0.0",
-                applicationLegalese: "Chandram Dutta © 2023 - MIT License",
+                applicationLegalese:
+                    "Chandram Dutta © 2023 - BSD-3-Clause License",
               );
             },
             icon: const Icon(
@@ -53,7 +55,13 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              launchUrl(
+                Uri.parse(
+                  "https://github.com/Chandram-Dutta/flutter_icon_browser",
+                ),
+              );
+            },
             icon: const Icon(
               FontAwesomeIcons.github,
             ),
