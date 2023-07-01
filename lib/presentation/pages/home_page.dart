@@ -45,7 +45,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   fit: BoxFit.fitWidth,
                 ),
                 applicationName: "Flutter Icon Browser",
-                applicationVersion: "1.0.0",
+                applicationVersion: "1.0.1",
                 applicationLegalese:
                     "Chandram Dutta © 2023 - BSD-3-Clause License",
               );
