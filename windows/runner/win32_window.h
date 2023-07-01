@@ -15,14 +15,14 @@ class Win32Window {
   struct Point {
     unsigned int x;
     unsigned int y;
-    Point(unsigned int x, unsigned int y) : x(x,), y(y) {}
+    Point(unsigned int x, unsigned int y) : x(x), y(y) {}
   };
 
   struct Size {
     unsigned int width;
     unsigned int height;
     Size(unsigned int width, unsigned int height)
-        : width(width,), height(height) {}
+        : width(width), height(height) {}
   };
 
   Win32Window();

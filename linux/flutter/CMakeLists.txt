@@ -9,7 +9,7 @@ include(${EPHEMERAL_DIR}/generated_config.cmake)
 # TODO: Move the rest of this into files in ephemeral. See
 # https://github.com/flutter/flutter/issues/57146.
 
-# Serves the same purpose as list(TRANSFORM ... PREPEND ...,),
+# Serves the same purpose as list(TRANSFORM ... PREPEND ...),
 # which isn't available in 3.10.
 function(list_prepend LIST_NAME PREFIX)
     set(NEW_LIST "")
