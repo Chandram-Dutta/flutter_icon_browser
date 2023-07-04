@@ -4,7 +4,7 @@ import 'package:flutter_icon_browser/icons/fluentui_icons.dart';
 import 'package:flutter_icon_browser/icons/fontawesome_icons.dart';
 import 'package:flutter_icon_browser/icons/material_icons.dart';
 import 'package:flutter_icon_browser/icons/yaru_icons.dart';
-import 'package:flutter_icon_browser/presentation/pages/home_page.dart';
+import 'package:flutter_icon_browser/model/icon_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchDialog extends ConsumerStatefulWidget {
@@ -25,6 +25,45 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
     super.dispose();
   }
 
+  showIconDetailsDialog(BuildContext context, IconModel icon) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(icon.iconName),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              Icon(
+                icon.icon,
+                size: 64,
+              ),
+              Text(
+                "Code Point: ${icon.icon.codePoint}",
+              ),
+              Text(
+                "Font Family: ${icon.icon.fontFamily}",
+              ),
+              Text(
+                "Match Text Direction: ${icon.icon.matchTextDirection}",
+              ),
+              Text(
+                "IconData: ${icon.icon.toString()}",
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Close"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -41,7 +80,7 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
                   setState(() {
                     ref.read(queryProvider.notifier).state = value;
                     // ignore: unused_result
-                    ref.refresh(iconSearchProvider);
+                    ref.refresh(allIconProvider);
                   });
                 },
                 decoration: const InputDecoration(
@@ -55,64 +94,36 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
                 ),
               ),
               Expanded(
-                child: Consumer(
-                  builder: (context, watch, child) {
-                    final icons = ref.watch(iconSearchProvider);
-                    return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            MediaQuery.of(context).size.width ~/ 225 == 0
-                                ? 1
-                                : MediaQuery.of(context).size.width ~/ 225,
-                      ),
-                      itemCount: icons.$1.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: SelectableText(icons.$2[index]),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Code Point: ${icons.$1[index].codePoint}",
-                                      ),
-                                      Text(
-                                        "Font Family: ${icons.$1[index].fontFamily}",
-                                      ),
-                                      Text(
-                                        "Match Text Direction: ${icons.$1[index].matchTextDirection}",
-                                      ),
-                                      Text(
-                                        "IconData: ${icons.$1[index].toString()}",
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("Close"),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          child: Icon(
-                            icons.$1[index],
-                            size: ref.watch(
-                              iconSizeProvider,
+                child: ref.watch(allIconProvider).when(
+                      data: (data) => GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount:
+                              MediaQuery.of(context).size.width ~/ 200 <= 2
+                                  ? 3
+                                  : MediaQuery.of(context).size.width ~/ 200,
+                        ),
+                        itemCount: data.length,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () =>
+                              showIconDetailsDialog(context, data[index]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Icon(
+                              data[index].icon,
+                              size: 48,
                             ),
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                        ),
+                      ),
+                      error: (err, stack) => Center(
+                        child: Text(
+                          err.toString(),
+                        ),
+                      ),
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
               ),
             ],
           ),
@@ -123,37 +134,38 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
 }
 
 final queryProvider = StateProvider.autoDispose<String>((ref) {
-  return "-";
+  return "";
 });
 
-final iconSearchProvider = Provider.autoDispose((
-  ref,
-) {
+final allIconProvider =
+    FutureProvider.autoDispose<List<IconModel>>((ref) async {
   final fluentIconsData = fluentuiIcons.map((e) => e.iconData).toList();
 
   final fluentIconsName = fluentuiIcons.map((e) => e.iconName).toList();
 
-  final icons = materialIcons +
+  var icons = materialIcons +
       yaruIcons +
       cupertinoIcons +
       fontawesomeIcons +
       fluentIconsData;
 
-  final iconsNames = materialIconsName +
+  var iconsNames = materialIconsName +
       yaruIconNames +
       cupertinoIconsNames +
       fontawesomeIconsNames +
       fluentIconsName;
 
-  final filteredIcons = iconsNames
-      .where((element) =>
-          element.toLowerCase().contains(ref.read(queryProvider).toLowerCase()))
-      .toList();
+  List<IconModel> allIcons = [];
 
-  final filteredIconsData = filteredIcons
-      .map((e) => icons[iconsNames.indexOf(e)])
-      .cast<IconData>()
-      .toList();
-
-  return (filteredIconsData, filteredIcons);
+  for (var i = 0; i < icons.length; i++) {
+    final icon = IconModel(
+      icon: icons[i],
+      iconName: iconsNames[i],
+      iconLibrary: null,
+    );
+    if (icon.toString().contains(ref.watch(queryProvider).toLowerCase())) {
+      allIcons.add(icon);
+    }
+  }
+  return allIcons;
 });

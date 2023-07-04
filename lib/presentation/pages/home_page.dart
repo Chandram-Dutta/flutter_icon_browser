@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icon_browser/presentation/views/cupertino_view.dart';
-import 'package:flutter_icon_browser/presentation/views/fluentui_view.dart';
-import 'package:flutter_icon_browser/presentation/views/fontawesome_view.dart';
-import 'package:flutter_icon_browser/presentation/views/material_view.dart';
-import 'package:flutter_icon_browser/presentation/views/yaru_view.dart';
+import 'package:flutter_icon_browser/presentation/widgets/icon_grid_view.dart';
 import 'package:flutter_icon_browser/presentation/widgets/search_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,39 +32,131 @@ class _HomePageState extends ConsumerState<HomePage> {
               },
               icon: const Icon(Icons.search),
             ),
-            IconButton(
-              onPressed: () {
-                showAboutDialog(
-                  context: context,
-                  applicationIcon: Image.asset(
-                    "assets/logo.png",
-                    width: 128,
-                    fit: BoxFit.fitWidth,
-                  ),
-                  applicationName: "Flutter Icon Browser",
-                  applicationVersion: "1.0.2",
-                  applicationLegalese:
-                      "Chandram Dutta © 2023 - BSD-3-Clause License",
-                );
-              },
-              icon: const Icon(
-                Icons.info_outline_rounded,
-              ),
-            ),
-            IconButton(
-              onPressed: () async {
-                launchUrl(
-                  Uri.parse(
-                    "https://github.com/Chandram-Dutta/flutter_icon_browser",
-                  ),
-                );
-              },
-              icon: const Icon(
-                FontAwesomeIcons.github,
-              ),
-            ),
+            constraints.maxWidth > 600
+                ? IconButton(
+                    onPressed: () {
+                      showAboutDialog(
+                        context: context,
+                        applicationIcon: Image.asset(
+                          "assets/logo.png",
+                          width: 128,
+                          fit: BoxFit.fitWidth,
+                        ),
+                        applicationName: "Flutter Icon Browser",
+                        applicationVersion: "2.0.0",
+                        applicationLegalese:
+                            "Chandram Dutta © 2023 - BSD-3-Clause License",
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.info_outline_rounded,
+                    ),
+                  )
+                : const SizedBox(),
+            constraints.maxWidth > 600
+                ? IconButton(
+                    onPressed: () async {
+                      launchUrl(
+                        Uri.parse(
+                          "https://github.com/Chandram-Dutta/flutter_icon_browser",
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      FontAwesomeIcons.github,
+                    ),
+                  )
+                : const SizedBox(),
           ],
         ),
+        drawer: constraints.maxWidth < 600
+            ? Drawer(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    DrawerHeader(
+                        child: SizedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/logo.png",
+                              width: 64,
+                              fit: BoxFit.fitWidth,
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            const Text("Flutter Icon Browser")
+                          ],
+                        ),
+                      ),
+                    )),
+                    ListTile(
+                      title: const Text("App Info"),
+                      onTap: () {
+                        showAboutDialog(
+                          context: context,
+                          applicationIcon: Image.asset(
+                            "assets/logo.png",
+                            width: 64,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          applicationName: "Flutter Icon Browser",
+                          applicationVersion: "2.0.0",
+                          applicationLegalese:
+                              "Chandram Dutta © 2023 - BSD-3-Clause License",
+                        );
+                      },
+                    ),
+                    ListTile(
+                      title: const Text("Github"),
+                      onTap: () async {
+                        launchUrl(
+                          Uri.parse(
+                            "https://github.com/Chandram-Dutta/flutter_icon_browser",
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              )
+            : null,
+        bottomNavigationBar: constraints.maxWidth < 600
+            ? NavigationBar(
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                onDestinationSelected: (value) {
+                  setState(() {
+                    _selectedIndex = value;
+                  });
+                },
+                selectedIndex: _selectedIndex,
+                destinations: const [
+                  NavigationDestination(
+                    icon: FaIcon(FontAwesomeIcons.google),
+                    label: "MaterialIcons",
+                  ),
+                  NavigationDestination(
+                    icon: FaIcon(FontAwesomeIcons.apple),
+                    label: "CupertinoIcons",
+                  ),
+                  NavigationDestination(
+                    icon: FaIcon(FontAwesomeIcons.microsoft),
+                    label: "FluentIcons",
+                  ),
+                  NavigationDestination(
+                    icon: FaIcon(YaruIcons.ubuntu_logo_simple),
+                    label: "YaruIcons",
+                  ),
+                  NavigationDestination(
+                    icon: FaIcon(FontAwesomeIcons.fontAwesome),
+                    label: "FontAwesomeIcons",
+                  ),
+                ],
+              )
+            : null,
         body: Row(
           children: [
             constraints.maxWidth > 600
@@ -159,15 +247,25 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Builder(
                 builder: (context) {
                   if (_selectedIndex == 0) {
-                    return const MaterialView();
+                    return IconGridView(
+                      provider: materialIconProvider,
+                    );
                   } else if (_selectedIndex == 1) {
-                    return const CupertinoView();
+                    return IconGridView(
+                      provider: cupertinoIconProvider,
+                    );
                   } else if (_selectedIndex == 2) {
-                    return const FluentUIView();
+                    return IconGridView(
+                      provider: fluentIconProvider,
+                    );
                   } else if (_selectedIndex == 3) {
-                    return const YaruView();
+                    return IconGridView(
+                      provider: yaruIconProvider,
+                    );
                   } else if (_selectedIndex == 4) {
-                    return const FontAwesomeView();
+                    return IconGridView(
+                      provider: fontawesomeIconProvider,
+                    );
                   } else {
                     return Container();
                   }

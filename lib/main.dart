@@ -1,4 +1,3 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_browser/presentation/pages/home_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,18 +18,32 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Icon Browser',
-      theme: FlexThemeData.light(
+      theme: ThemeData(
         useMaterial3: true,
-        scheme: FlexScheme.deepPurple,
+        colorSchemeSeed: Colors.blue,
         visualDensity: VisualDensity.comfortable,
         fontFamily: 'Expose',
+        brightness: Brightness.light,
       ),
-      darkTheme: FlexThemeData.dark(
+      darkTheme: ThemeData(
         useMaterial3: true,
-        scheme: FlexScheme.deepPurple,
+        colorSchemeSeed: Colors.blue,
         visualDensity: VisualDensity.comfortable,
         fontFamily: 'Expose',
+        brightness: Brightness.dark,
       ),
+      // theme: FlexThemeData.light(
+      //   useMaterial3: true,
+      //   scheme: FlexScheme.deepPurple,
+      //   visualDensity: VisualDensity.comfortable,
+      //   fontFamily: 'Expose',
+      // ),
+      // darkTheme: FlexThemeData.dark(
+      //   useMaterial3: true,
+      //   scheme: FlexScheme.deepPurple,
+      //   visualDensity: VisualDensity.comfortable,
+      //   fontFamily: 'Expose',
+      // ),
       home: const HomePage(),
     );
   }
