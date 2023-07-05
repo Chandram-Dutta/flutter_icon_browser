@@ -42,7 +42,7 @@ class IconGridView extends ConsumerWidget {
             children: [
               Icon(
                 icon.icon,
-                size: 200,
+                size: MediaQuery.of(context).size.width < 600 ? 200 : 64,
               ),
               Text(
                 "Code Point: ${icon.icon.codePoint}",
@@ -121,7 +121,8 @@ class IconGridView extends ConsumerWidget {
                                       onPressed: () => showIconDetailsDialog(
                                           context, data[index]),
                                       icon: const Icon(
-                                          Icons.info_outline_rounded),
+                                        Icons.info_outline_rounded,
+                                      ),
                                     ),
                                   ],
                                 ),
