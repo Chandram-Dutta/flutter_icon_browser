@@ -16,15 +16,15 @@ dependencies:
   flutter_riverpod: ^2.3.6
   font_awesome_flutter: ^10.4.0
   url_launcher: ^6.1.11
-  yaru_icons: ^1.0.4
+  yaru: ^4.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
   change_app_package_name: ^1.1.0
-  riverpod_lint: ^1.3.2
-  custom_lint: ^0.4.0
+  riverpod_lint: ^2.3.10
+  custom_lint: ^0.6.4
   flutter_launcher_icons: ^0.13.1
 
 flutter:
@@ -71,7 +71,7 @@ flutter_native_splash:
   # of your splash screen to a solid color.  Use background_image to set the background of your
   # splash screen to a png image.  This is useful for gradients. The image will be stretch to the
   # size of the app. Only one parameter can be used, color and background_image cannot both be set.
-  color: "#ffffff"
+  color: "#000000"
   #background_image: "assets/background.png"
 
   # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing
@@ -117,7 +117,7 @@ flutter_native_splash:
     #color: "#42a5f5"
 
     # App icon background color.
-    icon_background_color: "#ffffff"
+    icon_background_color: "#000000"
 
     # The branding property allows you to specify an image used as branding in the splash screen.
     #branding: assets/dart.png

@@ -4,7 +4,7 @@ import 'package:flutter_icon_browser/presentation/widgets/search_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:yaru_icons/yaru_icons.dart';
+import 'package:yaru/yaru.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
