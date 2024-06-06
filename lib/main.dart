@@ -21,6 +21,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     if (Platform.isIOS) {
       return const CupertinoApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Icon Browser',
         home: CupertinoHomePage(),
       );
     }

@@ -70,12 +70,9 @@ class _CupertinoSearchPageState extends ConsumerState<CupertinoSearchPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Spacer(),
-                              Hero(
-                                tag: (data[index].iconName),
-                                child: Icon(
-                                  data[index].icon,
-                                  size: ref.watch(iconSizeProvider),
-                                ),
+                              Icon(
+                                data[index].icon,
+                                size: ref.watch(iconSizeProvider),
                               ),
                               const SizedBox(height: 8),
                               SelectableText(
